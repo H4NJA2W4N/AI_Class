@@ -1,0 +1,62 @@
+# 이진 분류 모델 정의
+class CarEvaluationBinary(nn.Module):
+    def __init__(self):
+        super(CarEvaluationBinary, self).__init__()
+        self.fc1 = nn.Linear(k, 64) # k : 특성의 개수
+        self.fc2 = nn.Linear(64, 32)
+        self.fc3 = nn.Linear(32, 1)  # 출력 뉴런 1개
+
+    def forward(self, x):
+        x = torch.relu(self.fc1(x))
+        x = torch.relu(self.fc2(x))
+        x = torch.sigmoid(self.fc3(x))  # 확률 출력
+        return x
+
+# 모델, 손실 함수, 옵티마이저 정의
+model = CarEvaluationBinary()
+criterion = nn.BCELoss()
+optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+
+
+
+====================================================
+
+# 다중 분류 모델 정의
+class CarEvaluationMultiple(nn.Module):
+    def __init__(self):
+        super(CarEvaluationMultiple, self).__init__()
+        self.fc1 = nn.Linear(k, 64) # k : 특성의 개수
+        self.fc2 = nn.Linear(64, 32)
+        self.fc3 = nn.Linear(32, n)  # 출력 뉴런 n개 : 삼중 분류인 경우 3, 사중 분류인 경우 4, ...
+
+    def forward(self, x):
+        x = torch.relu(self.fc1(x))
+        x = torch.relu(self.fc2(x))
+        x = self.fc3(x)  # 확률 출력
+        return x
+
+# 모델, 손실 함수, 옵티마이저 정의
+model = CarEvaluationMultiple()
+criterion = nn.CrossEntropyLoss()
+optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+
+
+====================================================
+# 회귀 모델 정의
+class RegressionModel(nn.Module):
+    def __init__(self):
+        super(RegressionModel, self).__init__()
+        self.fc1 = nn.Linear(k, 64) # k : 특성의 개수
+        self.fc2 = nn.Linear(64, 32)
+        self.fc3 = nn.Linear(32, 1)  # 회귀: 출력 1개
+
+    def forward(self, x):
+        x = torch.relu(self.fc1(x))
+        x = torch.relu(self.fc2(x))
+        x = self.fc3(x)  # 활성화 함수 없이 출력
+        return x
+
+# 모델, 손실 함수, 옵티마이저
+model = RegressionModel()
+criterion = nn.MSELoss()
+optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
